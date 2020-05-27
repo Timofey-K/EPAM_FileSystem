@@ -13,74 +13,56 @@ namespace FileSystem
             //Task1.   Фаил должен быть размещён в папке c:\temp
             //--------------------------------------------------------------------------------------------------------------------------
 
-            string[] st1 = new string[100];
-            int[] nums = new int[100];
+            int count = File.ReadAllLines(@"c:\temp\disposable_task_file.txt").Length;
+            string[] st1 = new string[count];
+            int[] nums = new int[count];
 
-            using (FileStream fs1 = new FileStream(@"c:\temp\disposable_task_file.txt", FileMode.Open, FileAccess.Read)) ;
             using (StreamReader sr = new StreamReader(@"c:\temp\disposable_task_file.txt"))
             {
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < count; i++)
                 {
                     st1[i] = sr.ReadLine();
                 }
-                sr.Close();
             }
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < count; i++)
             {
                 nums[i] = int.Parse(st1[i]);
                 nums[i] *= nums[i];
             }
 
-            using (FileStream fs2 = new FileStream(@"c:\temp\disposable_task_file.txt", FileMode.Create, FileAccess.Write)) ;
+            using (FileStream fs1 = new FileStream(@"c:\temp\disposable_task_file.txt", FileMode.Create, FileAccess.Write)) ;
             using (StreamWriter sw = new StreamWriter(@"c:\temp\disposable_task_file.txt", true))
             {
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < count; i++)
                 {
                     sw.WriteLine(nums[i]);
                 }
-                sw.Close();
+
             }
 
             //--------------------------------------------------------------------------------------------------------------------------
             //Task 2.
             //--------------------------------------------------------------------------------------------------------------------------
 
-            if (!Directory.Exists(@"c:\temp\K1"))
-            {
-                DirectoryInfo di = new DirectoryInfo(@"c:\temp\K1");
-                di.Create();
-            }
 
-            if (!Directory.Exists(@"c:\temp\K2"))
-            {
-                DirectoryInfo di = new DirectoryInfo(@"c:\temp\K2");
-                di.Create();
-            }
+            DirectoryInfo di1 = new DirectoryInfo(@"c:\temp\K1");
+            di1.Create();
+
+            DirectoryInfo di2 = new DirectoryInfo(@"c:\temp\K2");
+            di2.Create();
+
 
             if (!File.Exists(@"c:\temp\K1\t1.txt"))
             {
-                var fi = new FileInfo(@"c:\temp\K1\t1.txt");
-                using (StreamWriter sw = fi.CreateText())
-                {
-                    sw.WriteLine("Иванов Иван Иванович, 2000 года рождения," +
+                File.WriteAllText(@"c:\temp\K1\t1.txt", "Иванов Иван Иванович, 2000 года рождения," +
                         " место жительства г.Рязань");
-                }
             }
 
             if (!File.Exists(@"c:\temp\K1\t2.txt"))
             {
-                var fi = new FileInfo(@"c:\temp\K1\t2.txt");
-                using (StreamWriter sw = fi.CreateText())
-                {
-                    sw.WriteLine("Петров Сергей Федорович, 2002 года рождения," +
+                File.WriteAllText(@"c:\temp\K1\t2.txt", "Петров Сергей Федорович, 2002 года рождения," +
                         " место жительства г.Бежицк");
-                }
-            }
-
-            if (!File.Exists(@"c:\temp\K2\t3.txt"))
-            {
-                var fi = new FileInfo(@"c:\temp\K2\t3.txt");
             }
 
             CopyText(@"c:\temp\K1\t1.txt", @"c:\temp\K2\t3.txt");
@@ -95,13 +77,9 @@ namespace FileSystem
             var fi2 = new FileInfo(@"c:\temp\K1\t2.txt");
             fi2.CopyTo(@"c:\temp\K2\t2.txt");
 
-            DirectoryInfo di1 = new DirectoryInfo(@"c:\temp\K1");
             di1.Delete(true);
-
-            DirectoryInfo di2 = new DirectoryInfo(@"c:\temp\K2");
             di2.MoveTo(@"c:\temp\All");
 
-            DirectoryInfo di3 = new DirectoryInfo(@"c:\temp\All");
             string[] st2 = Directory.GetFiles(@"c:\temp\All");
             foreach (string st in st2)
             {
@@ -117,7 +95,7 @@ namespace FileSystem
             using (StreamReader sr = new StreamReader(path1))
             {
                 line = sr.ReadLine();
-                sr.Close();
+
             }
             using (StreamWriter sw = new StreamWriter(path2, true))
             {
@@ -135,3 +113,4 @@ namespace FileSystem
 
     }
 }
+
